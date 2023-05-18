@@ -3,6 +3,8 @@ import Container from './components/Container/Container';
 import ContactForm from './components/ContactForm/ContactForm';
 import Filter from './components/Filter/Filter';
 import ContactList from './components/ContactList/ContactList';
+import { nanoid } from 'nanoid'
+
 
 import styles from './App.module.css';
 
@@ -17,9 +19,11 @@ class App extends Component {
     filter: '',
   };
 
-  addContact = newContact => {
-    const duplicateName = this.state.contacts.find(
-      contact => contact.name === newContact.name,
+  addContact = ({ newContact, name }) => {
+    // Проверка на дубликат
+    const { contacts } = this.state;
+    const duplicateName = contacts.some(
+      contact => contact.name.toLowerCase() === name.toLowerCase()
     );
 
     if (duplicateName) {
@@ -31,6 +35,8 @@ class App extends Component {
       contacts: [newContact, ...contacts],
     }));
   };
+
+
 
   changeFilter = event => {
     this.setState({ filter: event.currentTarget.value });

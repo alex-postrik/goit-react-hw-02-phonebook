@@ -1,19 +1,21 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
-import { v4 as uuidv4 } from 'uuid';
+import { nanoid } from "nanoid";
 
 import styles from './ContactForm.module.css';
 
 class ContactForm extends Component {
-  static propTypes = {
-    onSubmit: PropTypes.func.isRequired,
-  };
+  // static propTypes = {
+  //   onSubmit: PropTypes.func.isRequired,
+  // };
 
   state = {
+    id: '',
     name: '',
     number: '',
   };
 
+  // Метод, наблюдающий за инпутами и записывающий в стейт их значения
   hanldeChange = event => {
     const { name, value } = event.currentTarget;
 
@@ -22,20 +24,20 @@ class ContactForm extends Component {
     });
   };
 
+  // Метод на отправке формы. Формирует из стейта контакт и передает во внешний метод
   hanldeSubmit = event => {
     event.preventDefault();
 
     const contact = {
-      id: uuidv4(),
+      id: nanoid(),
       name: this.state.name,
       number: this.state.number,
     };
-
-    this.props.onSubmit(contact);
-
+    this.props.onSubmit(contact); // Внешний метод в пропсах класса
     this.resetForm();
   };
 
+  // Сброс полей формы (после отправки)
   resetForm = () => {
     this.setState({
       id: '',
@@ -56,8 +58,8 @@ class ContactForm extends Component {
             value={this.state.name}
             onChange={this.hanldeChange}
             pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-            title="Имя может состоять только из букв, апострофа, тире и пробелов. Например Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan и т. п."
-            required
+  title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
+  required
           />
         </label>
         <label className={styles.label}>
@@ -68,9 +70,9 @@ class ContactForm extends Component {
             className={styles.input}
             value={this.state.number}
             onChange={this.hanldeChange}
-            pattern="(\+?( |-|\.)?\d{1,2}( |-|\.)?)?(\(?\d{3}\)?|\d{3})( |-|\.)?(\d{3}( |-|\.)?\d{4})"
-            title="Номер телефона должен состоять из 11-12 цифр и может содержать цифры, пробелы, тире, пузатые скобки и может начинаться с +"
-            required
+            pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
+  title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
+  required
           />
         </label>
         <div className={styles.button__wrapper}>
@@ -82,5 +84,8 @@ class ContactForm extends Component {
     );
   }
 }
+ContactForm.propTypes = {
+    onSubmit: PropTypes.func.isRequired,
+};
 
 export default ContactForm;
