@@ -15,7 +15,6 @@ class ContactForm extends Component {
     number: '',
   };
 
-  // Метод, наблюдающий за инпутами и записывающий в стейт их значения
   hanldeChange = event => {
     const { name, value } = event.currentTarget;
 
@@ -24,7 +23,6 @@ class ContactForm extends Component {
     });
   };
 
-  // Метод на отправке формы. Формирует из стейта контакт и передает во внешний метод
   hanldeSubmit = event => {
     event.preventDefault();
 
@@ -33,11 +31,10 @@ class ContactForm extends Component {
       name: this.state.name,
       number: this.state.number,
     };
-    this.props.onSubmit(contact); // Внешний метод в пропсах класса
+    this.props.onSubmit(contact);
     this.resetForm();
   };
 
-  // Сброс полей формы (после отправки)
   resetForm = () => {
     this.setState({
       id: '',
